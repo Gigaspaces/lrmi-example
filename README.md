@@ -48,5 +48,16 @@ And [write bytes](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/s
 [Pivot](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/Pivot.java#L237) is the class that manage the socket at the server side
 [handleRequest](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/Pivot.java#L554) is the method that get the RequestPacket dispatch it to the remote object and send the result [replyPacket](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/Pivot.java#L587)
 [consumeAndHandleRequest] is where the Pivot forward the invoke to the [RMI Runtime](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/Pivot.java#L494)
-Each ReadSelectorThread holds an internal [Pivot that being used](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/selector/handler/ReadSelectorThread.java#L62) whenever there are some bytes in the channel (socket)              
-    
+Each ReadSelectorThread holds an internal [Pivot that being used](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/selector/handler/ReadSelectorThread.java#L62) whenever there are some bytes in the channel (socket)
+
+#### Message format
+The [first 4 bytes](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/Reader.java#L296)
+ contains the message size, the next bytes are serialized [RequestPacket](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/RequestPacket.java) / 
+ [ReplyPacket](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/nio/ReplyPacket.java)              
+
+### Limitations
+- The protocol does not support [pipeline](https://en.wikipedia.org/wiki/HTTP_pipelining) therefore it uses lots of system resources under load.
+- The protocol does not enable custome serialization.
+- It is not possible to negotiate connection filters/setting upon opening.
+- does not allow different filters stack per message.
+     
