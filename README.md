@@ -27,11 +27,11 @@
 
    The idea is to use Java [DynamicProxy](https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html) and provide an [InvocationHandler](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationHandler.html) that know how to call back to the server using local LRMI.
    
-   Our Invocation handler is the class [DynamicSmartStub](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L89) it is serailized so it can be sent to remote clients as blob and handle the calls back to the server using its (invoke)[https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L412] method.
+   Our Invocation handler is the class [DynamicSmartStub](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L89) it is serailized so it can be sent to remote clients as blob and handle the calls back to the server using its [invoke](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L412) method.
    
    It is wrapped inside a Dynamic proxy it implements all the Interfaces that marked as Remote in the exported Object.
    
-   It uses the [writeExternal](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L517) / (readExternal)[https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L587] trick to execute code when deserialize, the local LRMI [node](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L492) is created from this class if needed.
+   It uses the [writeExternal](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L517) / [readExternal](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L587) trick to execute code when deserialize, the local LRMI [node](https://github.com/xap/xap/blob/master/xap-core/xap-datagrid/src/main/java/com/gigaspaces/lrmi/DynamicSmartStub.java#L492) is created from this class if needed.
            
 ### Metworking.
 
